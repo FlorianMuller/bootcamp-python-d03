@@ -2,21 +2,27 @@ import numpy as np
 
 
 class NumPyCreator():
+    @staticmethod
     def from_list(lst, dtype=None):
         return np.array(list(lst), dtype=dtype)
 
+    @staticmethod
     def from_tuple(tpl, dtype=None):
         return np.array(tuple(tpl), dtype=dtype)
 
+    @staticmethod
     def from_iterable(itr, dtype=None):
         return np.array(list(itr), dtype=dtype)
 
+    @staticmethod
     def from_shape(shape, value=0, dtype=None):
         return np.full(shape, value, dtype=dtype)
 
+    @staticmethod
     def random(shape):
         return np.random.random_sample(shape)
 
+    @staticmethod
     def identity(n, dtype=None):
         return np.eye(n, dtype=dtype)
 
