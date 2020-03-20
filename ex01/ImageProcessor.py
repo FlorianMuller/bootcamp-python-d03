@@ -11,6 +11,9 @@ class ImageProcessor:
 
     @staticmethod
     def display(array):
+        plt.rcParams["toolbar"] = 'None'
+        plt.axis('off')
+
         plt.imshow(array)
         plt.show()
 
