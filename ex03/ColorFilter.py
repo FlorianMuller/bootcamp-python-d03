@@ -1,4 +1,4 @@
-# I M P O R T A N T: Execute from root with `python -m ex03.ColorFilter`
+# I M P O R T A N T: Execute from sub directory with `python -m ex03.ColorFilter`
 import numpy as np
 from ex01.ImageProcessor import ImageProcessor
 
@@ -11,12 +11,7 @@ class ColorFilter:
     @staticmethod
     def to_blue(array):
         blue_array = np.zeros(array.shape, dtype=array.dtype)
-
         blue_array[:, :, 2] = array[:, :, 2]
-        # for line, blue_line in zip(array, blue_array):
-        #     for pixel, blue_pixel in zip(line, blue_line):
-        #         blue_pixel[2] = pixel[2]
-
         return blue_array
 
     @staticmethod
@@ -27,6 +22,23 @@ class ColorFilter:
     def to_red(array):
         return array - ColorFilter.to_blue(array) - ColorFilter.to_green(array)
 
+    @staticmethod
+    def celluloid(array, treshold=4):
+        treshold = treshold if treshold > 0 else 1
+        values = np.linspace(0, 255, num=treshold, dtype=int)
+        values_limit = []
+        for i, val in enumerate(values):
+            left_dist = (val - values[i - 1]) / 2 if i > 0 else 0
+            right_dist = (values[i + 1] - val) / 2 if i < len(values) - 1 else 1
+            values_limit.append((val, (val - left_dist, val + right_dist)))
+
+        def cel_shading(pix):
+            for val, limit in values_limit:
+                if limit[0] <= pix < limit[1]:
+                    return val
+        cel_shading = np.vectorize(cel_shading)
+        return cel_shading(array)
+
 
 if __name__ == "__main__":
     ip = ImageProcessor
@@ -34,7 +46,7 @@ if __name__ == "__main__":
 
     img = ip.load("./ex03/Igor.jpg")
     # img = ip.load("./ex03/elon.jpg")
-    # ip.display(img)
+    ip.display(img)
 
     # Invert
     ip.display(cf.invert(img))
@@ -47,3 +59,8 @@ if __name__ == "__main__":
 
     # To red
     ip.display(cf.to_red(img))
+
+    # Celluloid
+    for i in range(2, 7):
+        print(f"Treshold {i}")
+        ip.display(cf.celluloid(img, treshold=i))
