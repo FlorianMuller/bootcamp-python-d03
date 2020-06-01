@@ -1,4 +1,4 @@
-# I M P O R T A N T: Execute from sub directory with `python -m ex03.ColorFilter`
+# I M P O R T A N T: Execute from parent directory with `python -m ex03.ColorFilter`
 import numpy as np
 from ex01.ImageProcessor import ImageProcessor
 
